@@ -16,7 +16,7 @@ async function main() {
   });
 
   const db = await open({
-    filename: './scrabble_words.db',
+    filename: './NWL2023.db',
     driver: sqlite3.Database,
   });
 
