@@ -1,31 +1,47 @@
 import { BskyAgent } from '@atproto/api';
 import * as dotenv from 'dotenv';
-import { CronJob } from 'cron';
-import * as process from 'process';
+import * as sqlite3 from 'sqlite3';
+import { open } from 'sqlite';
 
 dotenv.config();
 
-// Create a Bluesky Agent 
 const agent = new BskyAgent({
-    service: 'https://bsky.social',
-  })
-
+  service: 'https://bsky.social',
+});
 
 async function main() {
-    await agent.login({ identifier: process.env.BLUESKY_USERNAME!, password: process.env.BLUESKY_PASSWORD!})
-    await agent.post({
-        text: "🙂"
-    });
-    console.log("Just posted!")
+  await agent.login({
+    identifier: process.env.BLUESKY_USERNAME!,
+    password: process.env.BLUESKY_PASSWORD!,
+  });
+
+  const db = await open({
+    filename: './scrabble_words.db',
+    driver: sqlite3.Database,
+  });
+
+  try {
+    const wordRow = await db.get(
+      'SELECT word FROM words WHERE posted = 0 ORDER BY RANDOM() LIMIT 1'
+    );
+
+    if (!wordRow) {
+      console.log('All words have been posted!');
+      return;
+    }
+
+    const word = wordRow.word;
+    const postText = `${word} is a legal word in Scrabble.`;
+
+    await agent.post({ text: postText });
+    console.log(`Posted: "${postText}"`);
+
+    await db.run('UPDATE words SET posted = 1 WHERE word = ?', word);
+  } catch (error) {
+    console.error('Error:', error);
+  } finally {
+    await db.close();
+  }
 }
 
 main();
-
-
-// Run this on a cron job
-const scheduleExpressionMinute = '* * * * *'; // Run once every minute for testing
-const scheduleExpression = '0 */3 * * *'; // Run once every three hours in prod
-
-const job = new CronJob(scheduleExpression, main); // change to scheduleExpressionMinute for testing
-
-job.start();

@@ -3,6 +3,13 @@
     "@atproto/api": "^0.6.20",
     "cron": "^3.1.0",
     "dotenv": "^16.3.1",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "@types/sqlite3": "^3.1.11"
   }
 }
