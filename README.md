@@ -1,7 +1,1 @@
-# cookbook
-A collection of example projects and scripts for atproto development.
-
-* [How to make a post in Bluesky (Python)](/python-bsky-post/README.md)
-* [Starter kit for a Bluesky bot (TypeScript)](/ts-bot/README.md)
-* [Download and Inspect Repository (Go)](/go-repo-export/README.md)
-* [OAuth Web Service (Python)](/python-oauth-web-app/README.md)
+Every 10 minutes, this bot posts a unique legal Scrabble play from the NWL2023 dictionary at https://bsky.app/profile/scrabbleofficial.bsky.social.
