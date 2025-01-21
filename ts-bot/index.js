@@ -47,7 +47,7 @@ async function main() {
         password: process.env.BLUESKY_PASSWORD,
     });
     const db = await (0, sqlite_1.open)({
-        filename: './scrabble_words.db',
+        filename: './NWL2023.db',
         driver: sqlite3.Database,
     });
     try {
